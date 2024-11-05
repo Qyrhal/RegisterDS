@@ -9,20 +9,6 @@ import constants
 
 ## DO NOT USE THIS CODE, AI GENERATED SHIT ASS
 
-# Load employee data from a file
-def load_employees(file_path: str) -> List[employee.Employee]:
-    employees = []
-    with open(file_path, 'r') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            name = row['name']
-            min_hours = int(row['min_hours'])
-            bar = row['bar'] == 'True'
-            # Collect availability in a list for all shifts in the week
-            availability = [row[shift] == 'Y' for shift in row.keys() if "morning" in shift or "evening" in shift]
-            employees.append(employee.Employee(name, min_hours, bar, availability))
-    return employees
-
 def generate_roster(employees: List[employee.Employee]) -> Dict[str, Dict[str, List[str]]]:
     roster = {day: {"Morning": [], "Evening": []} for day in constants.Days}
     shift_index = 0  # Track shifts across the week (0: Monday Morning, 1: Monday Evening, ..., 13: Sunday Evening)

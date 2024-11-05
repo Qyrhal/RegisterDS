@@ -1,2 +1,6 @@
-name,min_hours,bar,monday_morning,monday_evening,tuesday_morning,tuesday_evening,wednesday_morning,wednesday_evening,thursday_morning,thursday_evening,friday_morning,friday_evening,saturday_morning,saturday_evening,sunday_morning,saturday_evening
-Midhun,15,False,N,N,Y,Y,N,N,Y,Y,N,N,N,N,Y,Y
+name,min_hours,bar,experience,opening,closing,monday_morning,monday_evening,tuesday_morning,tuesday_evening,wednesday_morning,wednesday_evening,thursday_morning,thursday_evening,friday_morning,friday_evening,saturday_morning,saturday_evening,sunday_morning,saturday_evening
+Midhun,15,False,0.75,False,False,N,N,Y,Y,N,N,Y,Y,N,N,N,N,Y,Y
+John,20,True,1.5,True,True,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y
+Jane,10,False,0.5,False,True,N,N,N,N,N,N,N,N,N,N,N,N,N,N
+Alice,25,True,2.0,True,False,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y,Y
+Bob,30,False,1.0,False,False,N,N,Y,Y,N,N,Y,Y,N,N,Y,Y,N,N

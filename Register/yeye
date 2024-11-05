@@ -1,0 +1,34 @@
+def _calculate_weighting(self) -> float:
+        """
+        Calculate the weighting for an self based on their attributes
+
+        :param self: self object
+        :return: Weighting for the self
+
+        Complexity: 
+        Best Case: O(1)
+        Worst Case: O(1)
+        """
+        self_weighting = 0.0
+
+        if self.get_bar():
+            self_weighting += 1.0
+
+        if self.get_opening():
+            self_weighting += 0.5
+        
+        if self.get_min_hours() < 10:
+            self_weighting += 0.6 # increase the weighting if the self has less than 10 hours
+
+        if self.get_opening():
+            self_weighting += 0.5
+        
+        if self.get_closing():
+            self_weighting += 0.5
+        
+        if self.get_opening() and self.get_closing():
+            self_weighting += 1.0
+
+        self_weighting += self.get_experience()
+
+        return self_weighting
