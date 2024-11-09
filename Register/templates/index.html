@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .copyright {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .run-button {
+            background-color: #4fc9c9;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .run-button:hover {
+            background-color: #3ba9a9;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .schedule-table th {
+            background-color: #ce810e;
+            color: white;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #b97100;
+        }
+
+        .schedule-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .shift-cell {
+            min-height: 80px;
+        }
+
+        .shift-title {
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .employee-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .employee-list li {
+            padding: 3px 0;
+            color: #333;
+        }
+
+        .schedule-table tr:hover td {
+            background-color: #f0f9f9;
+        }
+
+        .error-message {
+            color: #d93025;
+            padding: 10px;
+            background-color: #fce8e6;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shift Schedule Manager</h1>
+    <p class="copyright">© XemplarLabs 2024</p>
+
+    <button class="run-button" onclick="window.location.href='/populate';">Generate Schedule</button>
+
+    {% if error %}
+    <div class="error-message">
+        Error: {{ error }}
+    </div>
+    {% endif %}
+
+    <table class="schedule-table">
+        <tr>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+        </tr>
+        {% if schedule %}
+            <tr>
+                {% for day in schedule %}
+                <td>
+                    <div class="shift-cell">
+                        <div class="shift-title">Morning Shift</div>
+                        <ul class="employee-list">
+                            {% for employee in day[0] %}
+                                <li>{{ employee }}</li>
+                            {% else %}
+                                <li>No assignments</li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <div class="shift-title">Evening Shift</div>
+                        <ul class="employee-list">
+                            {% for employee in day[1] %}
+                                <li>{{ employee }}</li>
+                            {% else %}
+                                <li>No assignments</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </td>
+                {% endfor %}
+            </tr>
+        {% else %}
+            <tr>
+                {% for _ in range(7) %}
+                <td>
+                    <div class="shift-cell">
+                        <div class="shift-title">Morning Shift</div>
+                        <ul class="employee-list">
+                            <li>No schedule generated</li>
+                        </ul>
+                        <div class="shift-title">Evening Shift</div>
+                        <ul class="employee-list">
+                            <li>No schedule generated</li>
+                        </ul>
+                    </div>
+                </td>
+                {% endfor %}
+            </tr>
+        {% endif %}
+    </table>
+</body>
+</html>
