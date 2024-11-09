@@ -111,6 +111,10 @@ class Employee:
         return weighting
 
     def __lt__(self, other) -> bool:
+
+        # REMOVE THIS COZ IT AINT NEEDED 
+
+        
         """
         Compare employees based on their weighting.
         

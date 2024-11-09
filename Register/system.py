@@ -1,3 +1,5 @@
+# cleaned up the code using AI, coz im a beta male
+
 import employee
 from typing import List, Optional
 import csv
@@ -14,7 +16,7 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@dataclass
+@dataclass # no need for constants class anymore, delete it future midhun
 class ShiftRequirements:
     """Requirements for each shift"""
     min_employees: int = 5
@@ -22,6 +24,8 @@ class ShiftRequirements:
     needs_opener: bool = True
     needs_closer: bool = True
 
+
+# made these coz im too good of a coder
 class EmployeeSchedulerError(Exception):
     """Base exception for employee scheduler errors"""
     pass
@@ -37,7 +41,7 @@ class EmployeeScheduler:
         if file_path:
             self.file_path = file_path
         else:
-            # Try different possible file locations
+            # Try different possible file locations, coz this shit is fuckijgn me in the ass
             possible_paths = [
                 constants.Files.EMPLOYEES.value,
                 os.path.join('Register', 'employees.txt'),
@@ -109,9 +113,9 @@ class EmployeeScheduler:
         left = self._merge_sort(employees[:mid])
         right = self._merge_sort(employees[mid:])
         
-        return self._merge(left, right)
+        return self._merge_auxillary(left, right)
     
-    def _merge(self, left: List[employee.Employee], right: List[employee.Employee]) -> List[employee.Employee]:
+    def _merge_auxillary(self, left: List[employee.Employee], right: List[employee.Employee]) -> List[employee.Employee]:
         """Merge two sorted lists of employees"""
         result = []
         i = j = 0
@@ -139,9 +143,9 @@ class EmployeeScheduler:
             self.load_employees()
             self.sort_employees()
             
-            for day in range(constants.Constants.DAYS_IN_WEEK.value):
+            for day in range(7):
                 self.schedule[day] = {}
-                for shift in range(constants.Constants.SHIFTS_PER_DAY.value):
+                for shift in range(2):
                     assigned_employees = self._assign_shift(day, shift)
                     if assigned_employees:
                         self.schedule[day][shift] = assigned_employees
@@ -186,11 +190,7 @@ class EmployeeScheduler:
         
         return available_employees[:ShiftRequirements.min_employees]
 
-    def _validate_shift_requirements(
-        self, 
-        employees: List[employee.Employee], 
-        shift: int
-    ) -> bool:
+    def _validate_shift_requirements(self, employees: List[employee.Employee], shift: int) -> bool:
         """Validate that shift requirements can be met with available employees"""
         if len(employees) < ShiftRequirements.min_employees:
             return False
@@ -221,9 +221,9 @@ def main():
         schedule = scheduler.calculate_shifts()
         
         # Print schedule
-        for day in range(constants.Constants.DAYS_IN_WEEK.value):
+        for day in range(7):
             print(f"\nDay {day}:")
-            for shift in range(constants.Constants.SHIFTS_PER_DAY.value):
+            for shift in range(2):
                 print(f"  Shift {shift}:")
                 if day in schedule and shift in schedule[day]:
                     for emp in schedule[day][shift]:
