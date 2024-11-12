@@ -24,6 +24,16 @@ class ShiftRequirements:
     needs_opener: bool = True
     needs_closer: bool = True
 
+    def get_min_employees(self, day: int, shift: int):
+        """
+        Allows for overriding the default min_employees for specific days/shifts
+        """
+        # if day == 5 and shift == 1:  # Saturday Evening (day 5, shift 1)
+        #     return 8
+        # if day == 6 and shift == 0:  # Sunday Morning (day 6, shift 0)
+        #     return 8
+        return self.min_employees  # Default for other shifts
+
 
 # made these coz im too good of a coder
 class EmployeeSchedulerError(Exception):
@@ -142,7 +152,9 @@ class EmployeeScheduler:
         try:
             self.load_employees()
             self.sort_employees()
-            
+
+            self.shift_requirements = ShiftRequirements() #initialize ShiftRequirements
+
             for day in range(7):
                 self.schedule[day] = {}
                 for shift in range(2):
@@ -174,8 +186,11 @@ class EmployeeScheduler:
             if emp.is_available(day, shift) and 
             emp.get_worked_hours() < emp.get_min_hours()
         ]
-        
-        if not self._validate_shift_requirements(available_employees, shift):
+
+
+        min_employees_for_shift = self.shift_requirements.get_min_employees(day, shift) # Get the minimum number of employees for this specific shift
+
+        if not self._validate_shift_requirements(available_employees, shift, min_employees_for_shift): # Check requirements using new parameter
             logger.warning(f"Could not meet requirements for day {day}, shift {shift}")
             return None
             
@@ -188,11 +203,11 @@ class EmployeeScheduler:
             reverse=True
         )
         
-        return available_employees[:ShiftRequirements.min_employees]
+        return available_employees[:min_employees_for_shift] # Assign up to the specified minimum
 
-    def _validate_shift_requirements(self, employees: List[employee.Employee], shift: int) -> bool:
+    def _validate_shift_requirements(self, employees: List[employee.Employee], shift: int, min_employees_for_shift:int) -> bool: 
         """Validate that shift requirements can be met with available employees"""
-        if len(employees) < ShiftRequirements.min_employees:
+        if len(employees) < min_employees_for_shift: # Modification: Use day/shift specific minimum
             return False
             
         # Morning shift needs opener and bartender
@@ -201,7 +216,7 @@ class EmployeeScheduler:
             has_bartender = any(emp.get_bar() for emp in employees)
             if not (has_opener and has_bartender):
                 return False
-                
+
         # Evening shift needs closer
         if shift == 1 and ShiftRequirements.needs_closer:
             if not any(emp.get_closing() for emp in employees):
