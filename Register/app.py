@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 from system import EmployeeScheduler
 from typing import Dict, List
+import time
 
 app = Flask(__name__)
 
@@ -23,13 +24,17 @@ def format_shift_data(schedule: Dict) -> List[List[List[str]]]:
 
 @app.route('/populate')
 def populate():
+    time_start = time.time()
     try:
         scheduler = EmployeeScheduler()
         schedule = scheduler.calculate_shifts()
         formatted_data = format_shift_data(schedule)
+        time_end = time.time()
+        print(f'Population took {time_end - time_start:.9f} seconds')
         return render_template('index.html', schedule=formatted_data)
     except Exception as e:
         return render_template('index.html', error=str(e))
+    
 
 @app.route('/')
 def index():
